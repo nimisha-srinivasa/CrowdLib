@@ -1,0 +1,64 @@
+<div id="container">
+  
+    <div class="features_items"><!--features_items-->
+      <h2 class="title text-center">Listed Books</h2>
+      <% @books.each do |book| %>
+        <div class="col-sm-4">
+          <div class="product-image-wrapper">
+            <div class="single-products placeholder-image">
+              <div class="productinfo text-center">
+                <% if (book.image_url == nil) %>
+                  <%= image_tag "placeholder_cover.jpg", {height: 200}%>
+                <% else %>
+                  <%= image_tag book.image_url, {height: 200}%>
+                <% end %>
+                <h2><%= link_to book.title, book %></h2>
+                <p><%= book.author %></p>
+              </div>
+              <div class="product-overlay">
+                <div class="overlay-content">
+                  <h2 style="padding_bottom:80px;"><%= link_to book.title, book %></h2>
+                  <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-comments"></i>Message the Lender</a><br>
+                  <button type="button" class="btn btn-fefault cart" data-toggle="modal" data-target="#borrow_Modal"><i class=\"fa fa-shopping-cart\"></i>Borrow</button>
+                </div>
+              </div>
+
+              <div id="borrow_Modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <form class="contact" name="book_request" action="book_transactions/request" enctype="multipart/form-data" method="post">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Borrow <%= book.title %></h4>
+                    </div>
+                    <div class="modal-body">
+                      
+                        <input type="hidden" name="book_id" value="<%= book.id %>">
+                        <label class="label" for="loan_period">I want to borrow it for: </label>
+                        <input type="number" name="loan_period" class="input-xlarge"><br>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-success" type="submit" value="Request Book">Request Book</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="choose">
+              <ul class="nav nav-pills nav-justified">
+                <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <!--features_items-->
+    <%= will_paginate @books , renderer: BootstrapPagination::Rails%>
+</div>
